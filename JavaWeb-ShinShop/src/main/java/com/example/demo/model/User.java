@@ -2,16 +2,19 @@ package com.example.demo.model;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -25,12 +28,8 @@ public class User {
 	@Column(name = "user_id")
 	private int userId;
 	
-	@Column(name = "user_name")
-	private String userName;
-	
-	@Column(name = "user_account")
-	private String userAccount;
-	
+	private String name;
+	private String account;
 	private String password;
 	private String phone;
 	
@@ -46,7 +45,10 @@ public class User {
 	@Column(name = "is_deleted")
 	private boolean isDeleted;
 	
-	
+	@OneToMany(mappedBy = "user") // 用來查詢該用戶所有訂單
+	@ToString.Exclude //用於防止序列化時的循環依賴錯誤
+	private List<Order> orders;
+
 	
 	
 }
