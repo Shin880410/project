@@ -10,7 +10,7 @@ Orders(訂單資料)
 
 Order_details(訂單明細)
 +----------------------+--------------------------------+------------------------------+--------+----------+------------+----------+
-| order_detail_id (pk) | order_id (fk_order "order_id") | item_id (fk_item "item_id")  | option | quantity | unit_price | subtotal |
+| order_detail_id (pk) | order_id (fk_order "order_id") | item_id (fk_item "item_id")  | options | quantity | unit_price | subtotal |
 +----------------------+--------------------------------+------------------------------+--------+----------+------------+----------+
 
 Items(商品資料)
