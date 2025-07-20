@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>ShinBrunch 和風早午餐店</title>
+    <!-- jQuery & SweetAlert2 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            background: #f7f3ea;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: #3b2920;
+        }
+        .navbar {
+            width: 100%;
+            background: #fff3d5;
+            border-bottom: 3px double #c6b99a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 36px 0 12px;
+        }
+        .logo-area {
+            display: flex; align-items: center;
+        }
+        .logo-img {
+            height: 52px;
+            margin-right: 12px;
+        }
+        .brand {
+            font-size: 1.5em;
+            letter-spacing: 5px;
+            color: #c77b3a;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex; gap: 28px;
+        }
+        .nav-link {
+            font-size: 1.1em;
+            color: #836537;
+            text-decoration: none;
+            transition: color .1s;
+            padding: 10px 0;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #eed170;
+            border-bottom: 2px solid #eed170;
+        }
+        .login-btn {
+            background: #d8a657;
+            color: #fff;
+            border: none;
+            border-radius: 26px;
+            padding: 10px 30px;
+            font-size: 1em;
+            margin-left: 38px;
+            cursor: pointer;
+            transition: background .18s;
+            box-shadow: 0 2px 7px rgba(220,170,90,0.07);
+        }
+        .login-btn:hover {
+            background: #bb7d23;
+        }
+        .main-content {
+            text-align: center;
+            margin-top: 62px;
+        }
+        .main-photo {
+            width: 400px; max-width: 85vw;
+            border-radius: 18px;
+            box-shadow: 0 4px 36px #dab06c30;
+            margin: 12px auto 25px;
+            display: block;
+        }
+        h1 { font-size: 2.2em; margin-bottom: .3em; color: #665336; }
+        .desc {
+            font-size: 1.17em; color: #6b563b; margin-bottom: 22px;
+            line-height: 1.6;
+        }
+        .action-btn {
+            background: #88662d;
+            color: #fffbe8;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 22px;
+            padding: 12px 56px;
+            margin-top: 25px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+        .action-btn:hover { background: #ab842c; }
+        .footer {
+            margin-top: 64px;
+            color: #b8aa86;
+            text-align: center;
+            font-size: .96em;
+        }
+        /* 手機斷點設計 */
+        @media (max-width: 600px) {
+            .nav-links { gap: 17px; font-size: .93em; }
+            .main-photo { width: 97vw; }
+            .logo-img { height: 38px; }
+            .login-btn { padding: 7px 16px; margin-left: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 導覽列設計 -->
+    <div class="navbar">
+        <div class="logo-area">
+            <img src="shin-brunch-logo.png" class="logo-img" alt="Shin Brunch logo">
+            <span class="brand">ShinBrunch</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">首頁</a>
+            <a href="/menu" class="nav-link">菜單</a>
+            <a href="/about" class="nav-link">關於我們</a>
+            <a href="/contact" class="nav-link">聯絡資訊</a>
+        </div>
+        <button class="login-btn" id="loginBtn">登入/註冊</button>
+    </div>
+
+    <!-- 主要區塊 -->
+    <div class="main-content">
+        <!-- 請將下方 src 換成你自己的和風店內照片 -->
+        <img class="main-photo" src="japan-brunch-cafe.png" alt="和風店內照片">
+        <h1>歡迎來到 ShinBrunch</h1>
+        <div class="desc">
+            品味經典日式早午餐，享受現場手作料理的溫度。<br>
+            內用、外帶、線上點餐全面啟動，最舒適的春日餐桌體驗！
+        </div>
+        <button class="action-btn" id="orderBtn">立即查看菜單</button>
+    </div>
+    <div class="footer">
+        © 2025 ShinBrunch Café ｜ 和風‧溫暖‧每一天
+    </div>
+    <script>
+    // 登入/註冊按鈕
+    $('#loginBtn').click(function(){
+        Swal.fire({
+            title: '會員登入／註冊',
+            text: '成為會員立享專屬優惠與累點！',
+            icon: 'info',
+            confirmButtonText: '立即前往',
+            background: '#fffbee',
+            confirmButtonColor: '#d8a657'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/login'; // 依專案調整
+            }
+        });
+    });
+
+    // 查看菜單按鈕
+    $('#orderBtn').click(function(){
+        Swal.fire({
+            title: '線上菜單',
+            html: '<b>立即下單、預約取餐更省時！</b>',
+            icon: 'success',
+            background: '#fffbe6',
+            confirmButtonText: '前往菜單',
+            confirmButtonColor: '#88662d'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/menu'; // 依專案調整
+            }
+        });
+    });
+    </script>
+</body>
+</html>
