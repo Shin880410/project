@@ -45,6 +45,6 @@ public class OrderService {
             d.setSubtotal(i.getQuantity() * i.getUnitPrice());
             orderDetailRepo.save(d);
         }
-        return ResponseEntity.ok(Map.of("result","OK","orderId", main.getOrderId()));
+        return ResponseEntity.ok(Map.of("result","OK","orderId", main.getId()));
     }
 }

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.dto.PlaceOrderDto;
-import com.example.demo.securityUtil.SessionUtil;
 import com.example.demo.service.OrderService;
+import com.example.demo.util.SessionUtil;
 
 import jakarta.servlet.http.HttpSession;
 

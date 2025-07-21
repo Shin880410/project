@@ -1,4 +1,4 @@
-package com.example.demo.securityUtil;
+package com.example.demo.util;
 
 import jakarta.servlet.http.HttpSession;
 

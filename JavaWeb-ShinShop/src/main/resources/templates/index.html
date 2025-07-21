@@ -153,21 +153,6 @@
         });
     });
 
-    // 查看菜單按鈕
-    $('#orderBtn').click(function(){
-        Swal.fire({
-            title: '線上菜單',
-            html: '<b>立即下單、預約取餐更省時！</b>',
-            icon: 'success',
-            background: '#fffbe6',
-            confirmButtonText: '前往菜單',
-            confirmButtonColor: '#88662d'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/menu'; 
-            }
-        });
-    });
     </script>
 </body>
 </html>

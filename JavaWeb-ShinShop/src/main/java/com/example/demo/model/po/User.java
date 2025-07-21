@@ -28,7 +28,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 自動產生UserID
 	@Column(name = "user_id")
-	private Integer userId;
+	private Integer id;
 	
 	private String name;
 	private String phone;
@@ -44,7 +44,7 @@ public class User {
 	@Column(name = "update_time")
 	private LocalDateTime updateTime;
 	
-	@Column(name = "create_time")
+	@Column(name = "create_time", insertable = false, updatable = false)
 	private LocalDateTime createTime;
 	
 	@Column(name = "is_deleted")
