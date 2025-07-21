@@ -112,7 +112,7 @@
     <!-- 導覽列設計 -->
     <div class="navbar">
         <div class="logo-area">
-            <img src="shin-brunch-logo.png" class="logo-img" alt="Shin Brunch logo">
+            <img src="/images/shin-brunch-logo.png" class="logo-img" alt="Shin Brunch logo">
             <span class="brand">ShinBrunch</span>
         </div>
         <div class="nav-links">
@@ -126,8 +126,6 @@
 
     <!-- 主要區塊 -->
     <div class="main-content">
-        <!-- 請將下方 src 換成你自己的和風店內照片 -->
-        <img class="main-photo" src="japan-brunch-cafe.png" alt="和風店內照片">
         <h1>歡迎來到 ShinBrunch</h1>
         <div class="desc">
             品味經典日式早午餐，享受現場手作料理的溫度。<br>
@@ -150,7 +148,7 @@
             confirmButtonColor: '#d8a657'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/login'; // 依專案調整
+                window.location.href = '/login'; 
             }
         });
     });
@@ -166,7 +164,7 @@
             confirmButtonColor: '#88662d'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '/menu'; // 依專案調整
+                window.location.href = '/menu'; 
             }
         });
     });
