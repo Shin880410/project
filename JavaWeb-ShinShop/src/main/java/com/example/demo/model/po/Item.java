@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.po;
 
 
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    private int itemId;
+    private Integer itemId;
 
     private String name;
     private String description;

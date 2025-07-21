@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.po;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
-    private int categoryId;
+    private Integer categoryId;
 
     private String name;
 

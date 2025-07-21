@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.po;
 
 
 import java.time.LocalDateTime;
@@ -9,6 +9,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -26,12 +28,15 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  // 自動產生UserID
 	@Column(name = "user_id")
-	private int userId;
+	private Integer userId;
 	
 	private String name;
-	private String account;
-	private String password;
 	private String phone;
+	private String password;
+	
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
 	
 	@Column(name = "last_login_time")
 	private LocalDateTime lastLoginTime;

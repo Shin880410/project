@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.model.po;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +23,7 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	@Column(name = "order_id")
-	private int orderId;
+	private Integer orderId;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
