@@ -1,15 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>會員註冊</title></head>
+<html lang="zh-Hant" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>會員註冊</title>
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; padding: 2em; }
+        .form-area { max-width: 350px; margin:auto; background:#faf7ea; border-radius:12px; padding:2em; box-shadow:0 3px 20px #dfcda8a5 }
+        input { width:100%; padding:0.6em; border-radius:5px; border:1px solid #ccc; margin:0 0 1.1em }
+        .btn { background:#88662d; color:#fff; border:none; padding:0.8em 2.2em; border-radius:5px; font-weight:bold; font-size:1.05em; cursor:pointer; }
+        .btn:hover { background:#bca55b; }
+        .error { color:#d90000; margin-bottom:1em; }
+        .success { color:#138000; margin-bottom:1em; }
+    </style>
+</head>
 <body>
-<h2>會員註冊</h2>
-<form method="post" action="/register" th:object="${userRegisterDto}">
-    <label>姓名</label><input type="text" name="name" required /><br />
-    <label>手機</label><input type="tel" name="phone" required /><br/>
-    <label>密碼</label><input type="password" name="password" required /><br/>
-    <button type="submit">註冊</button>
-</form>
-<div th:if="${error}" th:text="${error}" style="color:red"></div>
-<a href="/login">已有帳號？登入</a>
+<div class="form-area">
+    <h2>會員註冊</h2>
+    <form method="post" action="/register">
+        <input type="text" name="name" placeholder="暱稱" required>
+        <input type="tel" name="phone" placeholder="手機號碼" required>
+        <input type="password" name="password" placeholder="密碼" required>
+        <button type="submit" class="btn">註冊</button>
+    </form>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${success}" class="success" th:text="${success}"></div>
+    <a href="/login">已註冊？點我登入</a>
+</div>
 </body>
 </html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>ShinBrunch 點餐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: "Noto Sans TC", sans-serif; background:#fcf7ea;}
+        .category { display:flex; gap:1em; margin-bottom:1.5em; }
+        .category button { background:#ede6d8; color:#4b3a19; border:none; border-radius:18px; padding:0.6em 2em; font-weight:600; }
+        .category button.active { background:#bca55b; color:#fff; }
+        .menu-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1.5em; }
+        .card { background:#fff; box-shadow:0 1px 8px #eedbbfa8; padding:1.2em; border-radius:12px; text-align:center;}
+        .card h4{margin:0.4em 0;}
+        .card .price{ color:#835f23; font-weight:700; }
+        .cart-btn { margin-top:1em; background:#ae7e33; color:#fff; padding:0.6em 1.8em; border:none; border-radius:6px; cursor:pointer;}
+        .cart-btn:hover{ background:#bca55b;}
+        .cart-float{ position:fixed; bottom:20px; right:20px; background:#bca55b; color:#fff; border-radius:50%; width:60px; height:60px; display:flex; align-items:center; justify-content:center; font-size:2em; box-shadow:0 3px 16px #a88a3a80; cursor:pointer;}
+        .cart-count{ background:#d90000; border-radius:50%; font-size:1em; color:#fff; position:absolute; top:6px; right:6px; padding:3px 10px;}
+        #cartModal{ display:none; position:fixed; top:0;left:0;width:100%;height:100%; background-color: rgba(0,0,0,.4);}
+        #cartPanel{ background:#fffbee; border-radius:12px; min-width:320px; max-width:92vw; margin:8vh auto 0; padding:2em 2.4em; position:relative;}
+        .cart-list{margin-bottom:2em;}
+        .cart-item{display:flex;justify-content:space-between;border-bottom:1px solid #ecdcb5; padding:.8em 0;}
+        .cart-total{font-weight:bold;text-align:right;}
+        .close-btn{position:absolute;top:18px;right:22px; cursor:pointer; font-size:1.2em;}
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <div style="max-width:1100px;margin:auto;padding:2em 4vw;">
+        <h1>ShinBrunch 點餐</h1>
+        <div class="category" id="categories"></div>
+        <div class="menu-grid" id="menu"></div>
+    </div>
+
+    <!-- 購物車按鈕 -->
+    <div class="cart-float" id="cartBtn">
+        🛒 <span class="cart-count" id="cartCount" style="display:none;">0</span>
+    </div>
+
+    <!-- 購物車 Modal -->
+    <div id="cartModal">
+        <div id="cartPanel">
+            <div class="close-btn" id="cartClose">✕</div>
+            <h3>購物車明細</h3>
+            <div class="cart-list" id="cartList"></div>
+            <div class="cart-total">總計：$<span id="cartTotal">0</span></div>
+            <label>備註</label>
+            <textarea style="width:100%;border-radius:8px;margin:.7em 0;" id="cartNote"></textarea>
+            <div style="margin:1.4em 0;">
+                <label>付款方式：</label>
+                <select id="payType"><option value="cash">現金</option><option value="linepay">Line Pay</option><option value="visa">VISA</option></select>
+            </div>
+            <button class="btn cart-btn" id="cartOrderSend">送出訂單</button>
+        </div>
+    </div>
+
+<script>
+let allCategories = [];
+let allItems = [];
+let cart = [];
+
+function renderCategories(){
+    let cats = [{categoryId: 0, name:"全部"}].concat(allCategories);
+    $("#categories").empty();
+    cats.forEach(c=>{
+        let btn = $(`<button>${c.name}</button>`);
+        btn.toggleClass("active", c.categoryId===(window.selectedCategory||0));
+        btn.on("click", ()=>{window.selectedCategory=c.categoryId;renderMenu();renderCategories();});
+        $("#categories").append(btn);
+    });
+}
+function renderMenu(){
+    let items = (window.selectedCategory && window.selectedCategory!==0)
+        ? allItems.filter(e => e.category && e.category.categoryId === window.selectedCategory)
+        : allItems;
+    $("#menu").empty();
+    items.forEach(i=>{
+        $("#menu").append(
+            `<div class="card">
+                <h4>${i.name}</h4>
+                <div class="price">$${i.price}</div>
+                <div style="color:#765">${i.description||""}</div>
+                <button class="cart-btn" onclick="addToCart(${i.itemId})">加入購物車</button>
+            </div>`
+        );
+    });
+}
+function addToCart(itemId){
+    // 客製化與備註可於modal再補寫
+    let exist = cart.find(e=>e.itemId===itemId);
+    let item = allItems.find(e=>e.itemId===itemId);
+    if(exist){
+        exist.quantity++;
+    }else{
+        cart.push({itemId:itemId, name:item.name, unitPrice:item.price, quantity:1, options:""});
+    }
+    updateCartCount();
+}
+function updateCartCount(){
+    let count = cart.reduce((a,b)=>a+b.quantity,0);
+    if(count>0){
+        $("#cartCount").text(count).show();
+    }else{
+        $("#cartCount").hide();
+    }
+}
+function renderCart(){
+    let tot = 0;
+    let html = cart.map((e,i)=>{
+        let sub = e.unitPrice*e.quantity; tot+=sub;
+        return `<div class="cart-item">
+            <div>${e.name}</div>
+            <div>x${e.quantity}</div>
+            <div>$${sub}</div>
+            <button onclick="removeCartItem(${i})" style="border:none;background:none;color:#d90000;cursor:pointer;font-size:1.1em;">✕</button>
+        </div>`;
+    }).join("");
+    $("#cartList").html(html||"購物車中沒有餐點");
+    $("#cartTotal").text(tot);
+}
+
+function removeCartItem(i){
+    cart.splice(i,1); updateCartCount(); renderCart();
+}
+
+// 購物車彈窗動作
+$("#cartBtn").on("click",function(){ renderCart(); $("#cartModal").show(); });
+$("#cartClose").on("click",function(){ $("#cartModal").hide(); });
+
+// 送出訂單
+$("#cartOrderSend").on("click",function(){
+    if(cart.length==0){alert("請先選擇餐點！");return;}
+    const order = {
+        pickupType: "dine-in", // 你可接RWD按鈕設計
+        paymentType: $("#payType").val(),
+        remark: $("#cartNote").val(),
+        items: cart.map(e=>({
+            itemId:e.itemId,
+            options:e.options,
+            quantity:e.quantity,
+            unitPrice:e.unitPrice
+        }))
+    };
+    $.ajax({
+        url:'/api/orders',
+        type:'POST',
+        contentType:'application/json',
+        data:JSON.stringify(order),
+        success:resp=>{
+            alert("訂單已送出，謝謝！");
+            cart=[];updateCartCount();$("#cartModal").hide();
+        },
+        error:(xhr)=>{
+            alert(xhr.status===401?"請先登入":"訂單傳送失敗");
+            if(xhr.status===401){location.href="/login";}
+        }
+    });
+});
+
+// 分類與商品載入  (初次進入頁面時)
+$(function(){
+    $.get('/api/categories',function(data){
+        allCategories=data; renderCategories();
+        $.get('/api/items',function(items){
+            allItems=items; renderMenu();
+        });
+    });
+    updateCartCount();
+});
+</script>
+</body>
+</html>

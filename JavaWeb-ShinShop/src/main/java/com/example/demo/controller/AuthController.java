@@ -8,10 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.model.dto.UserDto.UserLoginDto;
-import com.example.demo.model.dto.UserDto.UserRegisterDto;
+import com.example.demo.model.dto.UserLoginDto;
+import com.example.demo.model.dto.UserRegisterDto;
 import com.example.demo.model.po.User;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
@@ -21,15 +20,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
-
-    private final RoleRepository roleRepository;
-
     @Autowired UserRepository userRepo;
     @Autowired RoleRepository roleRepo;
-
-    AuthController(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     @GetMapping("/login")
     public String loginPage() { return "login"; }
