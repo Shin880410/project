@@ -36,7 +36,9 @@ public class AuthController {
     public String doLogin(@ModelAttribute UserLoginDto form, HttpSession session, Model model) {
         Optional<User> userOp = userRepo.findByPhone(form.getPhone());
         if(userOp.isPresent() && passwordEncoder.matches(form.getPassword(), userOp.get().getPassword())) {
-            session.setAttribute("userId", userOp.get().getId());
+        	User loginUser = userOp.get();
+            session.setAttribute("userId", loginUser.getId());
+            session.setAttribute("userRole", loginUser.getRole().getName());
             return "redirect:/menu";
         } else {
             model.addAttribute("error", "手機號碼或密碼錯誤");
